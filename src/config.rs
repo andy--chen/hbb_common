@@ -79,7 +79,27 @@ lazy_static::lazy_static! {
     pub static ref OVERWRITE_DISPLAY_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
     pub static ref DEFAULT_LOCAL_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
     pub static ref OVERWRITE_LOCAL_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
-    pub static ref HARD_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
+    # pub static ref HARD_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
+    pub static ref HARD_SETTINGS: RwLock<HashMap<String, String>> = {
+        let mut map = HashMap::new();
+    
+        // 默认中文
+        map.insert("lang".to_string(), "zh-cn".to_string());
+    
+        // ID 服务器
+        map.insert("rendezvous-server".to_string(), "rustdesk.shbupin.com".to_string());
+    
+        // 中继服务器
+        map.insert("relay-server".to_string(), "rustdesk.shbupin.com:21117".to_string());
+    
+        // API 服务器
+        map.insert("api-server".to_string(), "https://rustdesk.shbupin.com".to_string());
+    
+        // 禁止走官方自动更新，避免覆盖自定义客户端
+        map.insert("allow-auto-update".to_string(), "N".to_string());
+    
+        RwLock::new(map)
+    };
     pub static ref BUILTIN_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
 }
 
@@ -117,8 +137,8 @@ const CHARS: &[char] = &[
     'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
 ];
 
-pub const RENDEZVOUS_SERVERS: &[&str] = &["rs-ny.rustdesk.com"];
-pub const RS_PUB_KEY: &str = "OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=";
+pub const RENDEZVOUS_SERVERS: &[&str] = &["rustdesk.shbupin.com"];
+pub const RS_PUB_KEY: &str = "zOtR7oPxtiXmy6bHXL+as8UGLeXciz+jSVGMEMYEH5s=";
 
 pub const RENDEZVOUS_PORT: i32 = 21116;
 pub const RELAY_PORT: i32 = 21117;
