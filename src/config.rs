@@ -73,33 +73,34 @@ lazy_static::lazy_static! {
     static ref KEY_PAIR: Mutex<Option<KeyPair>> = Default::default();
     static ref USER_DEFAULT_CONFIG: RwLock<(UserDefaultConfig, Instant)> = RwLock::new((UserDefaultConfig::load(), Instant::now()));
     pub static ref NEW_STORED_PEER_CONFIG: Mutex<HashSet<String>> = Default::default();
-    pub static ref DEFAULT_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
+    pub static ref DEFAULT_SETTINGS: RwLock<HashMap<String, String>> = {
+        let mut map = HashMap::new();
+        map.insert(
+            keys::OPTION_CUSTOM_RENDEZVOUS_SERVER.to_string(),
+            "rustdesk.shbupin.com".to_string(),
+        );
+        map.insert(
+            keys::OPTION_RELAY_SERVER.to_string(),
+            "rustdesk.shbupin.com:21117".to_string(),
+        );
+        map.insert(
+            keys::OPTION_API_SERVER.to_string(),
+            "https://rustdesk.shbupin.com".to_string(),
+        );
+        map.insert(keys::OPTION_KEY.to_string(), RS_PUB_KEY.to_string());
+        map.insert(keys::OPTION_ALLOW_AUTO_UPDATE.to_string(), "N".to_string());
+        RwLock::new(map)
+    };
     pub static ref OVERWRITE_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
     pub static ref DEFAULT_DISPLAY_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
     pub static ref OVERWRITE_DISPLAY_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
-    pub static ref DEFAULT_LOCAL_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
-    pub static ref OVERWRITE_LOCAL_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
-    # pub static ref HARD_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
-    pub static ref HARD_SETTINGS: RwLock<HashMap<String, String>> = {
+    pub static ref DEFAULT_LOCAL_SETTINGS: RwLock<HashMap<String, String>> = {
         let mut map = HashMap::new();
-    
-        // 默认中文
-        map.insert("lang".to_string(), "zh-cn".to_string());
-    
-        // ID 服务器
-        map.insert("rendezvous-server".to_string(), "rustdesk.shbupin.com".to_string());
-    
-        // 中继服务器
-        map.insert("relay-server".to_string(), "rustdesk.shbupin.com:21117".to_string());
-    
-        // API 服务器
-        map.insert("api-server".to_string(), "https://rustdesk.shbupin.com".to_string());
-    
-        // 禁止走官方自动更新，避免覆盖自定义客户端
-        map.insert("allow-auto-update".to_string(), "N".to_string());
-    
+        map.insert(keys::OPTION_LANGUAGE.to_string(), "zh-cn".to_string());
         RwLock::new(map)
     };
+    pub static ref OVERWRITE_LOCAL_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
+    pub static ref HARD_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
     pub static ref BUILTIN_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
 }
 
