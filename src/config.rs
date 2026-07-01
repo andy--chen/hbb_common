@@ -101,7 +101,11 @@ lazy_static::lazy_static! {
     };
     pub static ref OVERWRITE_LOCAL_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
     pub static ref HARD_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
-    pub static ref BUILTIN_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
+    pub static ref BUILTIN_SETTINGS: RwLock<HashMap<String, String>> = {
+        let mut map = HashMap::new();
+        map.insert(keys::OPTION_HIDE_SERVER_SETTINGS.to_string(), "Y".to_string());
+        RwLock::new(map)
+    };
 }
 
 #[cfg(target_os = "android")]
