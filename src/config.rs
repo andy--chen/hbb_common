@@ -91,7 +91,23 @@ lazy_static::lazy_static! {
         map.insert(keys::OPTION_ALLOW_AUTO_UPDATE.to_string(), "N".to_string());
         RwLock::new(map)
     };
-    pub static ref OVERWRITE_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
+    pub static ref OVERWRITE_SETTINGS: RwLock<HashMap<String, String>> = {
+        let mut map = HashMap::new();
+        map.insert(
+            keys::OPTION_CUSTOM_RENDEZVOUS_SERVER.to_string(),
+            "rustdesk.shbupin.com".to_string(),
+        );
+        map.insert(
+            keys::OPTION_RELAY_SERVER.to_string(),
+            "rustdesk.shbupin.com:21117".to_string(),
+        );
+        map.insert(
+            keys::OPTION_API_SERVER.to_string(),
+            "https://rustdesk.shbupin.com".to_string(),
+        );
+        map.insert(keys::OPTION_KEY.to_string(), RS_PUB_KEY.to_string());
+        RwLock::new(map)
+    };
     pub static ref DEFAULT_DISPLAY_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
     pub static ref OVERWRITE_DISPLAY_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
     pub static ref DEFAULT_LOCAL_SETTINGS: RwLock<HashMap<String, String>> = {
