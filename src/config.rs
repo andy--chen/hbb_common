@@ -72,14 +72,55 @@ lazy_static::lazy_static! {
     static ref KEY_PAIR: Mutex<Option<KeyPair>> = Default::default();
     static ref USER_DEFAULT_CONFIG: RwLock<(UserDefaultConfig, Instant)> = RwLock::new((UserDefaultConfig::load(), Instant::now()));
     pub static ref NEW_STORED_PEER_CONFIG: Mutex<HashSet<String>> = Default::default();
-    pub static ref DEFAULT_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
-    pub static ref OVERWRITE_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
+    pub static ref DEFAULT_SETTINGS: RwLock<HashMap<String, String>> = {
+        let mut map = HashMap::new();
+        map.insert(
+            keys::OPTION_CUSTOM_RENDEZVOUS_SERVER.to_string(),
+            "rustdesk.shbupin.com".to_string(),
+        );
+        map.insert(
+            keys::OPTION_RELAY_SERVER.to_string(),
+            "rustdesk.shbupin.com:21117".to_string(),
+        );
+        map.insert(
+            keys::OPTION_API_SERVER.to_string(),
+            "https://rustdesk.shbupin.com".to_string(),
+        );
+        map.insert(keys::OPTION_KEY.to_string(), RS_PUB_KEY.to_string());
+        map.insert(keys::OPTION_ALLOW_AUTO_UPDATE.to_string(), "N".to_string());
+        RwLock::new(map)
+    };
+    pub static ref OVERWRITE_SETTINGS: RwLock<HashMap<String, String>> = {
+        let mut map = HashMap::new();
+        map.insert(
+            keys::OPTION_CUSTOM_RENDEZVOUS_SERVER.to_string(),
+            "rustdesk.shbupin.com".to_string(),
+        );
+        map.insert(
+            keys::OPTION_RELAY_SERVER.to_string(),
+            "rustdesk.shbupin.com:21117".to_string(),
+        );
+        map.insert(
+            keys::OPTION_API_SERVER.to_string(),
+            "https://rustdesk.shbupin.com".to_string(),
+        );
+        map.insert(keys::OPTION_KEY.to_string(), RS_PUB_KEY.to_string());
+        RwLock::new(map)
+    };
     pub static ref DEFAULT_DISPLAY_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
     pub static ref OVERWRITE_DISPLAY_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
-    pub static ref DEFAULT_LOCAL_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
+    pub static ref DEFAULT_LOCAL_SETTINGS: RwLock<HashMap<String, String>> = {
+        let mut map = HashMap::new();
+        map.insert(keys::OPTION_LANGUAGE.to_string(), "zh-cn".to_string());
+        RwLock::new(map)
+    };
     pub static ref OVERWRITE_LOCAL_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
     pub static ref HARD_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
-    pub static ref BUILTIN_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
+    pub static ref BUILTIN_SETTINGS: RwLock<HashMap<String, String>> = {
+        let mut map = HashMap::new();
+        map.insert(keys::OPTION_HIDE_SERVER_SETTINGS.to_string(), "Y".to_string());
+        RwLock::new(map)
+    };
 }
 
 #[cfg(target_os = "android")]
@@ -113,8 +154,8 @@ const CHARS: &[char] = &[
     'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
 ];
 
-pub const RENDEZVOUS_SERVERS: &[&str] = &["rs-ny.rustdesk.com"];
-pub const RS_PUB_KEY: &str = "OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=";
+pub const RENDEZVOUS_SERVERS: &[&str] = &["rustdesk.shbupin.com"];
+pub const RS_PUB_KEY: &str = "zOtR7oPxtiXmy6bHXL+as8UGLeXciz+jSVGMEMYEH5s=";
 
 pub const RENDEZVOUS_PORT: i32 = 21116;
 pub const RELAY_PORT: i32 = 21117;
